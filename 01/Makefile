@@ -1,9 +1,11 @@
 CC=g++ -std=c++14
   
-all: test  
-  
-test: main.o alloc.o   
+all: allocator 
+
+allocator: main.o alloc.o 
 	$(CC) -o allocator main.o alloc.o  
+ 
+test: allocator  
 	./allocator
 	
 main.o: main.cpp alloc.h  
