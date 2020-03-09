@@ -17,7 +17,7 @@ void makeAllocator(size_t maxSize){
         exit(1); 
     }		
     ::maxSize = maxSize;
-	return;
+    return;
 }
 
 char* alloc(size_t size){
