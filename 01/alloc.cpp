@@ -11,7 +11,13 @@ size_t maxSize;
 
 void makeAllocator(size_t maxSize){
     begin_pos = (int8_t*)(malloc(maxSize));
+    if(begin_pos == NULL)                                                                   
+    {                                                                           
+        cout<< "Memory allocation failed, exit\n";                            
+        exit(1); 
+    }		
     ::maxSize = maxSize;
+	return;
 }
 
 char* alloc(size_t size){
