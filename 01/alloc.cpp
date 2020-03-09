@@ -25,3 +25,7 @@ char* alloc(size_t size){
 void reset(){
     pos = 0;
 }
+
+void free_mem(){
+    free(begin_pos);
+}

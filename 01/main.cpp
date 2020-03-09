@@ -35,7 +35,7 @@ int main(){
     assert(c == nullptr);
     cout << "+ function alloc() has returned nullptr. \n\n";
 
-    free(begin_pos);
+    free_mem();
     cout << "All tests are passed\n";
     return 0;
 }
