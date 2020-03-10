@@ -16,6 +16,7 @@ void makeAllocator(size_t maxSize){
         cout<< "Memory allocation failed, exit\n";
         begin_pos = nullptr;
         ::maxSize = 0;
+        return;
     }
     ::maxSize = maxSize;
     return;
