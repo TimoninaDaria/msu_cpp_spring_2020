@@ -22,9 +22,10 @@ int main(){
     cout << "+ function reset() was called. \n";
 
     c = alloc(100);
-    *(c+50) = 'D'; //try to write something
-    *(c+60) = 'A'; //try to write something
-
+    if (c!=nullptr){
+        *(c+50) = 'D'; //try to write something
+        *(c+60) = 'A'; //try to write something
+    }
     assert(c != nullptr);
     cout << "+ function alloc() hasn't returned nullptr. \n";
 
