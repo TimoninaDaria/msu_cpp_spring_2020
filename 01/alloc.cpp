@@ -13,7 +13,7 @@ void makeAllocator(size_t maxSize){
     begin_pos = (int8_t*)(malloc(maxSize));
     if(begin_pos == NULL)
     {
-        cout<< "Memory allocation failed, exit\n";
+        cout<< "Memory allocation failed\n";
         begin_pos = nullptr;
         ::maxSize = 0;
         return;
