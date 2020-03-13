@@ -33,17 +33,17 @@ int main(){
     register_on_stop(Callback_on_stop);
 
     cout<<"Test 1\n";
-    cout<<"Let's pars string\n\n'\n hhjf\n\n 2662    \nhhhh\t255621\n'\n";
+    cout<<"Let's parse string\n\n'\n hhjf\n\n 2662    \nhhhh\t255621\n'\n";
     cout<<"\nResult of parsing:\n\n";
     parser("\n hhjf\n\n 2662    \nhhhh\t255621\n");
 
     cout<<"\nTest 2\n";
-    cout<<"Let's pars string\n\n'121 tgkkgk ::\n\t4344\t'\n";
+    cout<<"Let's parse string\n\n'121 tgkkgk ::\n\t4344\t'\n";
     cout<<"\nResult of parsing:\n\n";
     parser("121 tgkkgk ::\n\t4344\t");
 
     cout<<"\nTest 3\n";
-    cout<<"Let's pars string\n\n'\t\t445 ttt\tttt'\n";
+    cout<<"Let's parse string\n\n'\t\t445 ttt\tttt'\n";
     cout<<"\nResult of parsing:\n\n";
     parser("\t\t445 ttt\tttt");
 
