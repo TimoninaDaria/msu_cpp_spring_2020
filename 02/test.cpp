@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void Callback_on_number(const char* str)
+void Callback_on_number(int str)
 {
     cout<<"number "<<str<<"\n";
 }
