@@ -3,11 +3,12 @@
 #include <iostream>
 #include <ctype.h>
 #include <cstring>
+#include <string>
 
 using namespace std;
 
 using OnNumber = void (*)(int token);
-using OnString = void (*)(const char*token);
+using OnString = void (*)(const string& token);
 using OnStartOrStop  = void (*)();
 
 OnNumber Callback_on_number;
@@ -35,22 +36,22 @@ void register_on_stop(OnStartOrStop callback){
     Callback_on_stop = callback;
 }
 
-void parser(const char* text){
+void parser(const string& text){
+    char pos;
+    string token = "";
     if(!Callback_on_start || !Callback_on_stop || !Callback_on_string || !Callback_on_number) return;
     Callback_on_start();
-    string token = "";
-    const char* pos;
-    while (*text){
-        while (isspace(*text)){
-        ++text;
+    for (int i =0; i < text.length(); ++i){
+        while (isspace(text[i])){
+        ++i;
         }
-        while (!isspace(*text) && *text){
-            token += *text;
-            ++text;
+        while (!isspace(text[i]) && text[i]){
+            token += text[i];
+            ++i;
         }
-        pos = text - 1;
-        if (isdigit(*pos)) Callback_on_number(stoi(token));
-        else if(!isspace(*pos)) Callback_on_string(token.c_str());
+        pos = text[i- 1];
+        if (isdigit(pos)) Callback_on_number(stoi(token));
+        else if(!isspace(pos)) Callback_on_string(token);
         token.erase();
     }
     Callback_on_stop();
