@@ -2,8 +2,6 @@
 #include <cstring>
 #include <string>
 
-using namespace std;
-
 using OnNumber = void (*)(int token);
 using OnString = void (*)(const string& token);
 using OnStartOrStop  = void (*)();
