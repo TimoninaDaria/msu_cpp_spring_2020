@@ -7,7 +7,7 @@ class Matrix
         int *r;
         int len;
 
-        public:
+    public:
         ROW(int* m, int cols);
         int& operator[](int col);
     };
@@ -16,7 +16,7 @@ class Matrix
     int rows;
     int*m;
 
-    public:
+public:
     Matrix(int num_rows, int num_cols);
     ~Matrix();
     int getRows() const;
