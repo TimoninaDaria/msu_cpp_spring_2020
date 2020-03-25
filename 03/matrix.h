@@ -1,30 +1,33 @@
 #pragma once
+#include <cstdlib>
 
 class Matrix
 {
-    class ROW
+    class Row
     {
         int *r;
-        int len;
+        size_t len;
 
     public:
-        ROW(int* m, int cols);
-        int& operator[](int col);
+        Row(int* m, size_t cols);
+        int& operator[](size_t col);
+        int operator[](size_t col) const;
     };
 
-    int cols;
-    int rows;
+    size_t cols;
+    size_t rows;
     int*m;
 
 public:
-    Matrix(int num_rows, int num_cols);
+    Matrix(size_t num_rows, size_t num_cols);
     ~Matrix();
-    int getRows() const;
-    int getColumns() const;
-    void operator*=(int n);
+    size_t getRows() const;
+    size_t getColumns() const;
+    const Matrix& operator*=(int n);
     bool operator==(const Matrix& other) const;
     bool operator!=(const Matrix& other) const;
-    ROW operator[](int row);
+    Row operator[](size_t row);
+    Row operator[](size_t row) const;
 };
 
 

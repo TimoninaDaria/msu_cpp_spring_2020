@@ -7,19 +7,27 @@
 
 using namespace std;
 
-Matrix::ROW::ROW(int* m, int cols){
+Matrix::Row::Row(int* m, size_t cols){
             r = m;
             len = cols;
         }
 
-int& Matrix::ROW::operator[](int col){
+int& Matrix::Row::operator[](size_t col){
            if (col > len)
                throw out_of_range("");
            return *(r+col);
         }
 
-Matrix::Matrix(int num_rows, int num_cols){
+int Matrix::Row::operator[](size_t col) const{
+           if (col > len)
+               throw out_of_range("");
+           return *(r+col);
+        }
+
+Matrix::Matrix(size_t num_rows, size_t num_cols){
         m = (int*)(malloc(num_rows*num_cols*sizeof(int)));
+        if(m == NULL)
+            throw bad_alloc();
         cols = num_cols;
         rows = num_rows;
     }
@@ -28,19 +36,19 @@ Matrix::~Matrix(){
         free(m);
     }
 
-int Matrix::getRows() const{
+size_t Matrix::getRows() const{
         return rows;
     }
 
-int Matrix::getColumns() const{
+size_t Matrix::getColumns() const{
         return cols;
     }
 
-void Matrix::operator*=(int n){
-        for (int i = 0; i < cols*rows; ++i){
+const Matrix& Matrix::operator*=(int n){
+        for (size_t i = 0; i < cols*rows; ++i){
             m[i] = m[i]*n;
         }
-        return;
+        return *this;
     }
 
 bool Matrix::operator==(const Matrix& other) const{
@@ -48,7 +56,7 @@ bool Matrix::operator==(const Matrix& other) const{
             return false;
         if (this == &other)
             return true;
-        for (int i = 0; i < cols*rows; ++i)
+        for (size_t i = 0; i < cols*rows; ++i)
             if (m[i] != other.m[i])
                 return false;
         return true;
@@ -58,10 +66,16 @@ bool Matrix::operator!=(const Matrix& other) const{
         return !(*this == other);
     }
 
-Matrix::ROW Matrix::operator[](int row){
+Matrix::Row Matrix::operator[](size_t row){
         if (row > rows)
             throw out_of_range("");
-        return ROW(m+row*cols, cols);
+        return Row(m+row*cols, cols);
+    }
+
+Matrix::Row Matrix::operator[](size_t row) const{
+        if (row > rows)
+            throw out_of_range("");
+        return Row(m+row*cols, cols);
     }
 
 

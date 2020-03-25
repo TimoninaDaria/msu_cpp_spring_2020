@@ -10,8 +10,8 @@ using namespace std;
 int main(){
     cout<<"Tests\n";
 
-    int rows = 5;
-    int cols = 3;
+    size_t rows = 5;
+    size_t cols = 3;
 
     Matrix m(rows, cols);
 
@@ -27,8 +27,8 @@ int main(){
 
     Matrix a(rows, cols);
 
-    for (int i = 0; i < rows; ++i){
-        for (int j = 0; j < cols; ++j){
+    for (size_t i = 0; i < rows; ++i){
+        for (size_t j = 0; j < cols; ++j){
             m[i][j] = i*j;
             a[i][j] = i*j;
         }
@@ -42,6 +42,9 @@ int main(){
 
     a[0][1] = 100;
     assert(a == m);
+
+    const Matrix m_c(rows, cols);
+    int b = m_c[1][1];
     cout<<"All tests are passed";
 
 }
