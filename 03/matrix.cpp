@@ -18,10 +18,11 @@ int& Matrix::Row::operator[](size_t col){
            return *(r+col);
         }
 
-int Matrix::Row::operator[](size_t col) const{
+const int Matrix::Row::operator[](size_t col) const{
            if (col > len)
                throw out_of_range("");
-           return *(r+col);
+		   cout<<'q';
+		   return *(r+col);
         }
 
 Matrix::Matrix(size_t num_rows, size_t num_cols){
@@ -72,10 +73,12 @@ Matrix::Row Matrix::operator[](size_t row){
         return Row(m+row*cols, cols);
     }
 
-Matrix::Row Matrix::operator[](size_t row) const{
+const Matrix::Row Matrix::operator[](size_t row) const{
         if (row > rows)
             throw out_of_range("");
-        return Row(m+row*cols, cols);
+		const Row res(m+row*cols, cols);
+		cout<<'q';
+        return res;
     }
 
 

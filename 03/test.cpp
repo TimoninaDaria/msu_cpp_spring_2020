@@ -45,6 +45,8 @@ int main(){
 
     const Matrix m_c(rows, cols);
     int b = m_c[1][1];
+	//m_c[1][1] = 333;
+	cout<<m_c[1][1];
     cout<<"All tests are passed";
 
 }

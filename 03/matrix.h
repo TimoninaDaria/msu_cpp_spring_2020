@@ -11,7 +11,7 @@ class Matrix
     public:
         Row(int* m, size_t cols);
         int& operator[](size_t col);
-        int operator[](size_t col) const;
+        const int operator[](size_t col) const;
     };
 
     size_t cols;
@@ -27,7 +27,7 @@ public:
     bool operator==(const Matrix& other) const;
     bool operator!=(const Matrix& other) const;
     Row operator[](size_t row);
-    Row operator[](size_t row) const;
+    const Row operator[](size_t row) const;
 };
 
 
