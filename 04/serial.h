@@ -2,16 +2,6 @@
 #include <string>
 #include <iostream>
 
-bool isInteger(const std::string & s)
-{
-    if(s.empty() || ((!isdigit(s[0])) && (s[0] != '+'))) return false;
-
-    char * p;
-    strtol(s.c_str(), &p, 10);
-
-    return (*p == 0);
-}
-
 enum class Error
 {
     NoError,
@@ -35,29 +25,18 @@ public:
     }
 
     template <class... ArgsT>
-    Error operator()(ArgsT... args)
+    Error operator()(ArgsT&&... args)
     {
-        return process(args...);
+        return process(std::forward<ArgsT>(args)...);
     }
 private:
-    template <class... ArgsT>
-    Error process(bool val, ArgsT... args)
+    template <class Arg, class... ArgsT>
+    Error process(Arg& val, ArgsT&&... args)
     {
-        if(val)
-            out_ << "true"<< Separator;
-        else
-            out_ << "false" << Separator;
-        process(std::forward<ArgsT>(args)...);
-        return Error::NoError;
+        process(val);
+        return process(std::forward<ArgsT>(args)...);
     }
 
-    template <class... ArgsT>
-    Error process(uint64_t val, ArgsT... args)
-    {
-        out_ << val << Separator;
-        process(std::forward<ArgsT>(args)...);
-        return Error::NoError;
-    }
     Error process(uint64_t val)
     {
         out_ << val << Separator;
@@ -93,36 +72,15 @@ public:
     template <class... ArgsT>
     Error operator()(ArgsT&&... args)
     {
-        return process(args...);
-    }
-
-private:
-    template <class... ArgsT>
-    Error process(bool& val, ArgsT&&... args)
-    {
-        std::string text;
-        in_ >> text;
-        if (text == "true")
-            val = true;
-        else if (text == "false")
-            val = false;
-        else
-            return Error::CorruptedArchive;
-
         return process(std::forward<ArgsT>(args)...);
     }
 
-    template <class... ArgsT>
-    Error process(uint64_t& val, ArgsT&&... args)
+private:
+    template <class Arg, class... ArgsT>
+    Error process(Arg& val, ArgsT&&... args)
     {
-
-        std::string text;
-        in_ >> text;
-        if (isInteger(text))
-            val = std::stoi(text);
-        else
+        if(process(val) != Error::NoError)
             return Error::CorruptedArchive;
-
         return process(std::forward<ArgsT>(args)...);
     }
 
@@ -130,10 +88,15 @@ private:
     {
         std::string text;
         in_ >> text;
-        if (isInteger(text))
+        if (text[0] == '-' || text.empty())  return Error::CorruptedArchive;
+        try
+        {
             val = std::stoi(text);
-        else
+        }
+        catch(std::invalid_argument)
+        {
             return Error::CorruptedArchive;
+        }
         return Error::NoError;
     }
 
