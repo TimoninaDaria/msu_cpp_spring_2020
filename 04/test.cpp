@@ -38,6 +38,27 @@ assert(err == Error::NoError);
 assert(x.a == y.a);
 assert(x.b == y.b);
 assert(x.c == y.c);
+
+auto s2 = std::stringstream("1 2 3");
+Deserializer d2(s2);
+assert(d2.load(y) == Error::CorruptedArchive);
+
+auto s3 = std::stringstream("");
+Deserializer d3(s3);
+assert(d3.load(y) == Error::CorruptedArchive);
+
+auto s4 = std::stringstream("false 1");
+Deserializer d4(s4);
+assert(d4.load(y) == Error::CorruptedArchive);
+
+auto s5 = std::stringstream("100 false 500");
+Deserializer d5(s5);
+assert(d5.load(y) == Error::NoError);
+assert(y.a == 100);
+assert(y.b == false);
+assert(y.c == 500);
+
+
 cout<<"Test is passed";
 return 0;
 }

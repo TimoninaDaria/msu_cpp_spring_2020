@@ -109,8 +109,7 @@ private:
         else
             return Error::CorruptedArchive;
 
-        process(std::forward<ArgsT>(args)...);
-        return Error::NoError;
+        return process(std::forward<ArgsT>(args)...);
     }
 
     template <class... ArgsT>
@@ -124,8 +123,7 @@ private:
         else
             return Error::CorruptedArchive;
 
-        process(std::forward<ArgsT>(args)...);
-        return Error::NoError;
+        return process(std::forward<ArgsT>(args)...);
     }
 
     Error process(uint64_t& val)
