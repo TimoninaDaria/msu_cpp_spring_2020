@@ -32,8 +32,8 @@ Serializer serializer(s1);
 serializer.save(x);
 
 Data y { 0, false, 0 };
-Deserializer deserializer(s1);
-const Error err = deserializer.load(y);
+Deserializer d1(s1);
+const Error err = d1.load(y);
 assert(err == Error::NoError);
 assert(x.a == y.a);
 assert(x.b == y.b);
