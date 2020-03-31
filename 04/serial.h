@@ -39,7 +39,7 @@ public:
     {
         return process(args...);
     }
-
+private:
     template <class... ArgsT>
     Error process(bool val, ArgsT... args)
     {
