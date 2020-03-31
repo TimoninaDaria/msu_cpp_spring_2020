@@ -39,7 +39,7 @@ assert(x.a == y.a);
 assert(x.b == y.b);
 assert(x.c == y.c);
 
-auto s2 = std::stringstream("1 2 3");
+auto s2 = std::stringstream("3 4 5");
 Deserializer d2(s2);
 assert(d2.load(y) == Error::CorruptedArchive);
 
@@ -47,16 +47,16 @@ auto s3 = std::stringstream("");
 Deserializer d3(s3);
 assert(d3.load(y) == Error::CorruptedArchive);
 
-auto s4 = std::stringstream("false 1");
+auto s4 = std::stringstream("false 0");
 Deserializer d4(s4);
 assert(d4.load(y) == Error::CorruptedArchive);
 
-auto s5 = std::stringstream("100 false 500");
+auto s5 = std::stringstream("1400 false 15000");
 Deserializer d5(s5);
 assert(d5.load(y) == Error::NoError);
-assert(y.a == 100);
+assert(y.a == 1400);
 assert(y.b == false);
-assert(y.c == 500);
+assert(y.c == 15000);
 
 
 cout<<"Test is passed";
