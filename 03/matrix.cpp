@@ -21,16 +21,16 @@ int& Matrix::Row::operator[](size_t col){
 const int Matrix::Row::operator[](size_t col) const{
            if (col > len)
                throw out_of_range("");
-		   cout<<'q';
 		   return *(r+col);
         }
 
-Matrix::Matrix(size_t num_rows, size_t num_cols){
+Matrix::Matrix(size_t num_rows, size_t num_cols):cols(num_cols),
+        rows(num_rows)
+        {
         m = (int*)(malloc(num_rows*num_cols*sizeof(int)));
         if(m == NULL)
             throw bad_alloc();
-        cols = num_cols;
-        rows = num_rows;
+
     }
 
 Matrix::~Matrix(){
@@ -77,7 +77,6 @@ const Matrix::Row Matrix::operator[](size_t row) const{
         if (row > rows)
             throw out_of_range("");
 		const Row res(m+row*cols, cols);
-		cout<<'q';
         return res;
     }
 

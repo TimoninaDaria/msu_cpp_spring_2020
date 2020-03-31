@@ -13,11 +13,10 @@ int main(){
     size_t rows = 5;
     size_t cols = 3;
 
-    Matrix m(rows, cols);
+    Matrix m(rows,cols);
 
     assert(m.getRows() == 5);
     assert(m.getColumns() == 3);
-
     m[0][1] = 2;
     m *= 3;
     assert(m[0][1] == 6);
@@ -46,7 +45,7 @@ int main(){
     const Matrix m_c(rows, cols);
     int b = m_c[1][1];
 	//m_c[1][1] = 333;
-	cout<<m_c[1][1];
+	cout<<m_c[1][1]<<"\n";
     cout<<"All tests are passed";
 
 }
