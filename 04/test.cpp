@@ -26,13 +26,13 @@ struct Data
 int main(){
 Data x {11, true, 22};
 
-std::stringstream stream;
+std::stringstream s1;
 
-Serializer serializer(stream);
+Serializer serializer(s1);
 serializer.save(x);
 
 Data y { 0, false, 0 };
-Deserializer deserializer(stream);
+Deserializer deserializer(s1);
 const Error err = deserializer.load(y);
 assert(err == Error::NoError);
 assert(x.a == y.a);
@@ -58,6 +58,9 @@ assert(y.a == 1400);
 assert(y.b == false);
 assert(y.c == 15000);
 
+auto s6 = std::stringstream("10 true -300");
+Deserializer d6(s6);
+assert(d6.load(y) == Error::CorruptedArchive);
 
 cout<<"Test is passed";
 return 0;
