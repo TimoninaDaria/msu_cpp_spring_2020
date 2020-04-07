@@ -10,7 +10,7 @@ class BigInt{
 public:
 
     int len;
-    int sign;
+    int8_t sign;
     uint8_t* number;
 
     BigInt();
