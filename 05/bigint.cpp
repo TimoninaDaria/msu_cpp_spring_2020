@@ -100,7 +100,9 @@ BigInt BigInt::operator+(const BigInt& other) const {
         max_num = other.number;
       }
     tmp.len = max_len + 1;
+    uint8_t* tmpptr = tmp.number;
     tmp.number = new uint8_t[max_len+1];
+    delete[] tmpptr;
     tmp.sign = sign;
     for (int i=0; i < tmp.len; ++i) {
         tmp.number[i] = 0;
@@ -179,14 +181,17 @@ BigInt BigInt::operator-(const BigInt& other) const {
         if (equal == 1) {
             tmp.len = 1;
             tmp.sign = 1;
+            uint8_t* tmpptr = tmp.number;
             tmp.number = new uint8_t[1];
+            delete[] tmpptr;
             tmp.number[0] = 0;
             return tmp;
         }
     }
     tmp.len = max_len;
+    uint8_t* tmpptr = tmp.number;
     tmp.number = new uint8_t[max_len];
-
+    delete[] tmpptr;
     for (int i=0; i < tmp.len; ++i) {
         tmp.number[i] = 0;
     }
