@@ -13,7 +13,7 @@ std::string arg_to_string (T&& arg)
 }
 
 template <class... ArgsT>
-std::string format(const std::string& val, ArgsT&&... args) // в скобках допустимо любое целое число, не только цифры
+std::string format(const std::string& val, ArgsT&&... args) // it is allowed to use not only digit in brackets, but numbers over 10 like {10}
 {
     std::string result = "";
     std::vector<std::string> params{arg_to_string(std::forward<ArgsT>(args))...};
