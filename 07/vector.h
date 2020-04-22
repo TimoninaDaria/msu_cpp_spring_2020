@@ -103,11 +103,15 @@ public:
 
     }
 
-    template <class... Args>
-    void construct(T* ptr, Args&&... arg){
-        ptr = new(ptr) T(std::forward<Args>(arg)...);
+    template <class Args>
+    void construct(T* ptr, Args&& arg){
+        ptr = new(ptr) T(std::forward<Args>(arg));
     }
 
+
+    void construct(T* ptr){
+        ptr = new(ptr) T();
+    }
 
     void destroy(T* ptr){
         ptr->~T();
@@ -179,7 +183,7 @@ public:
         if (capac == len){
             reserve(2*capac);
         }
-        al.construct(data + len, std::forward<value_type>(value));
+        al.construct(data + len, std::move(value));
         ++len;
 
     }

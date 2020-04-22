@@ -82,7 +82,7 @@ static int Counter = 0;
 
 struct My
 {
-    My(int k){
+    My(){
         std::cout<<"constr\n";
     }
 
@@ -146,8 +146,8 @@ private:
 int main()
 {
     Vector<My>v;
-    My r(7);
-    v.push_back(r+8);
+    My r;
+    v.push_back(r);
     {
         Vector<int> v;
 
