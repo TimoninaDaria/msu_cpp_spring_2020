@@ -103,13 +103,11 @@ public:
 
     }
 
-    void construct(T* ptr, const T& val)  {
-       new (ptr) T (val);
-  }
-
-    void construct(T* ptr)  {
-        new (ptr) T ();
+    template <class... Args>
+    void construct(T* ptr, Args&&... arg){
+        ptr = new(ptr) T(std::forward<Args>(arg)...);
     }
+
 
     void destroy(T* ptr){
         ptr->~T();
@@ -181,16 +179,19 @@ public:
         if (capac == len){
             reserve(2*capac);
         }
-        al.construct(data + len, value);
+        al.construct(data + len, std::forward<value_type>(value));
         ++len;
+
     }
+
     void push_back(const value_type& value){
         if (capac == len){
-            reserve(capac);
+            reserve(2*capac);
         }
         al.construct(data + len, value);
         ++len;
     }
+
     void reserve(size_type count){
         if (count > capac){
             T*ptr_tmp = al.allocate(count);

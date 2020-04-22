@@ -80,6 +80,25 @@ void doCheckEqual(const X& actual, const Y& expected, size_t line)
 
 static int Counter = 0;
 
+struct My
+{
+    My(int k){
+        std::cout<<"constr\n";
+    }
+
+    My(My&& moved){
+       std:: cout<<"move\n";
+    }
+
+    My(const My& copied){
+       std:: cout<<"copied\n";
+    }
+    My operator+(int k){
+        return *this;
+    }
+
+};
+
 struct Counterable
 {
     Counterable()
@@ -122,8 +141,13 @@ private:
     const std::chrono::high_resolution_clock::time_point start_;
 };
 
+
+
 int main()
 {
+    Vector<My>v;
+    My r(7);
+    v.push_back(r+8);
     {
         Vector<int> v;
 
@@ -279,4 +303,5 @@ int main()
     }
 
     return res;
+
 }
