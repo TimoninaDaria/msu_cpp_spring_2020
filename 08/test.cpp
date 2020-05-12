@@ -29,7 +29,7 @@ int main(){
     task2.get();
     auto task3 = pool.exec(foo, 21);
     task3.get();
-    auto task4 =pool.exec(loo, "dff");
+    auto task4 = pool.exec(loo, "dff");
     int res = task4.get();
     std::cout << res;
 

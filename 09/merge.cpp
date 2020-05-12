@@ -1,16 +1,17 @@
 #include "merge.h"
-
+#include "pool.h"
 using namespace std;
 const int batch_size = 1000;
+ThreadPool pool(2);
 
-void mymerge(vector<uint64_t>& vec, int start, int mid, int end)
+void mymerge(vector<uint64_t>& vec, size_t start, size_t mid, size_t end)
 {
 	vector<uint64_t> one (vec.begin() + start, vec.begin() + mid + 1);
 	vector<uint64_t> two (vec.begin() + mid + 1, vec.begin() + end + 1);
 
-	int a = 0;
-	int b = 0;
-	int index = start;
+	size_t a = 0;
+	size_t b = 0;
+	size_t index = start;
 	while (a < one.size() && b < two.size())
 	{
 		if (one[a] < two[b])
@@ -24,22 +25,35 @@ void mymerge(vector<uint64_t>& vec, int start, int mid, int end)
 		vec[index ++] = two[b ++];
 }
 
-void merge_sort(vector<uint64_t>& vec, int start, int end)
+void usual_merge_sort(vector<uint64_t>& vec, size_t start, size_t end)
 {
 	if (start >= end)
 		return;
 
-	int mid = start + (end - start) / 2;
+	size_t mid = start + (end - start) / 2;
 
-	thread first(merge_sort, std::ref(vec), start, mid);
-	thread second(merge_sort, std::ref(vec), mid + 1, end);
-	first.join();
-	second.join();
+	usual_merge_sort(std::ref(vec), start, mid);
+	usual_merge_sort(std::ref(vec), mid + 1, end);
 	mymerge(vec, start, mid, end);
 }
 
 
-void mergeF(const string input1, const string input2, const string output)
+
+void merge_sort(vector<uint64_t>& vec, size_t start, size_t end)
+{
+	if (start >= end)
+		return;
+
+	size_t mid = start + (end - start) / 2;
+    auto task1 = pool.exec(usual_merge_sort, std::ref(vec), start, mid);
+    auto task2 = pool.exec(usual_merge_sort, std::ref(vec), mid + 1, end);
+    task1.wait();
+    task2.wait();
+	mymerge(vec, start, mid, end);
+}
+
+
+void mergeF(const string& input1, const string& input2, const string& output)
 {
 	uint64_t x, y;
 	ifstream f1(input1, ios::binary);
@@ -47,8 +61,7 @@ void mergeF(const string input1, const string input2, const string output)
 	ofstream f_res(output, ios::binary);
 	if (!f1 || !f2 || !f_res)
 	{
-		cout << "Unable to open file"<<'\n';
-		return;
+        throw std::runtime_error("Could not open file");
 	}
 	f1.read(reinterpret_cast<char*>(&x), sizeof(uint64_t));
 	f2.read(reinterpret_cast<char*>(&y), sizeof(uint64_t));
@@ -84,7 +97,7 @@ void mergeF(const string input1, const string input2, const string output)
 	}
 }
 
-int batch_toF(string strF)
+int batch_toF(const string& strF)
 {
 	ifstream fin;
 	fin.open(strF, ios::binary);
@@ -93,8 +106,7 @@ int batch_toF(string strF)
 	int num_off = 0;
 	if (!fin)
 	{
-		cout << "Unable to open file"<<'\n';
-		return num_off;
+        throw std::runtime_error("Could not open file");
 	}
 	while(fin.read(reinterpret_cast<char *>(&a), sizeof(uint64_t)))
 	{
@@ -105,10 +117,10 @@ int batch_toF(string strF)
 		else
 		{
 			ofstream fout;
-			string str = "tmp/tmp" + to_string(num_off) + ".dat";
+			string str = "tmp_for_merge/tmp" + to_string(num_off) + ".dat";
 			fout.open(str, ios::binary);
 			merge_sort(v, 0, v.size()-1);
-			for(int i = 0; i < v.size(); i++)
+			for(size_t i = 0; i < v.size(); i++)
 			{
 				fout.write(reinterpret_cast<char *>(&v[i]), sizeof(uint64_t));
 			}
@@ -120,10 +132,10 @@ int batch_toF(string strF)
 	if(v.size() != 0)
 	{
 		ofstream fout;
-		string str = "tmp/tmp" + to_string(num_off) + ".dat";
+		string str = "tmp_for_merge/tmp" + to_string(num_off) + ".dat";
 		fout.open(str, ios::binary);
 		merge_sort(v, 0, v.size()-1);
-		for(int i = 0; i < v.size(); i++)
+		for(size_t i = 0; i < v.size(); i++)
 		{
 			fout.write(reinterpret_cast<char *>(&v[i]), sizeof(uint64_t));
 		}
@@ -134,33 +146,32 @@ int batch_toF(string strF)
 
 }
 
-int sort_by_merge(string file_to_sort){
-	mkdir("tmp");
+int sort_by_merge(const string& file_to_sort){
+	mkdir("tmp_for_merge");
 	int num_off = batch_toF(file_to_sort);
 	if(num_off == 0)
 	{
-		cout<<"error"<<'\n';
-		return -1;
+        throw std::runtime_error("Wrong input file");
 	}
 	if(num_off > 2)
 	{
 		int i = 2;
-		mergeF("tmp/tmp0.dat", "tmp/tmp1.dat", "tmp/tmp" + to_string(num_off) + ".dat");
+		mergeF("tmp_for_merge/tmp0.dat", "tmp_for_merge/tmp1.dat", "tmp_for_merge/tmp" + to_string(num_off) + ".dat");
 		for(i; i < num_off-1; i++)
 		{
-			mergeF("tmp/tmp" + to_string(i) + ".dat",
-				"tmp/tmp" + to_string(i + num_off - 2) + ".dat",
-				"tmp/tmp"+ to_string(num_off - 1 + i) +".dat");
+			mergeF("tmp_for_merge/tmp" + to_string(i) + ".dat",
+				"tmp_for_merge/tmp" + to_string(i + num_off - 2) + ".dat",
+				"tmp_for_merge/tmp"+ to_string(num_off - 1 + i) +".dat");
 
 		}
-		mergeF("tmp/tmp" + to_string(i) + ".dat",
-			"tmp/tmp" + to_string(i + num_off - 2) + ".dat",
+		mergeF("tmp_for_merge/tmp" + to_string(i) + ".dat",
+			"tmp_for_merge/tmp" + to_string(i + num_off - 2) + ".dat",
 			"result.dat");
 
 	}
 	else
 	{
-		mergeF("tmp/tmp0.dat", "tmp/tmp1.dat", "result.dat");
+		mergeF("tmp_for_merge/tmp0.dat", "tmp_for_merge/tmp1.dat", "result.dat");
 	}
 	return 0;
 }
