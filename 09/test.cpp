@@ -3,7 +3,18 @@
 
 using namespace std;
 
-void test(const string inputfile, const string outputfile){
+void generator(const string& namefile){
+
+    ofstream fout;
+    uint64_t v;
+    fout.open(namefile, ios::binary);
+    for (int i = 0; i < 100001; ++i){
+        v = std::rand() + 1;
+        fout.write(reinterpret_cast<char *>(&v), sizeof(uint64_t));
+    }
+}
+
+void test(const string& inputfile, const string& outputfile){
 
     ifstream f1(inputfile, ios::binary);
     ifstream f2(outputfile, ios::binary);
@@ -32,7 +43,7 @@ void test(const string inputfile, const string outputfile){
 }
 
 int main(){
-
+    generator("numbers.dat");
     int isok = sort_by_merge("numbers.dat");
     assert(isok == 0);
     test("numbers.dat", "result.dat");
