@@ -43,9 +43,9 @@ void test(const string& inputfile, const string& outputfile){
 }
 
 int main(){
-    generator("numbers.dat");
+    generator("numbers.dat"); //let's generate input file
     int isok = sort_by_merge("numbers.dat");
     assert(isok == 0);
-    test("numbers.dat", "result.dat");
+    test("numbers.dat", "result.dat"); //check output file
     return 0;
 }
