@@ -1,10 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <thread>
 #include <atomic>
-#include <mutex>
-#include <deque>
 #include <vector>
 #include <condition_variable>
 #include <string>
@@ -13,8 +10,6 @@
 #include <vector>
 #include <sstream>
 #include <fstream>
-#include <future>
-#include <atomic>
 
 #include "pool.h"
 
