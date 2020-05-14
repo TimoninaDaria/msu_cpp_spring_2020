@@ -41,7 +41,7 @@ void parser(const string& text){
     string token = "";
     if(!Callback_on_start || !Callback_on_stop || !Callback_on_string || !Callback_on_number) return;
     Callback_on_start();
-    for (int i =0; i < text.length(); ++i){
+    for (int i = 0; i < text.length(); ++i){
         while (isspace(text[i])){
         ++i;
         }

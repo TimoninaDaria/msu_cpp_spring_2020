@@ -244,7 +244,7 @@ bool BigInt::operator==(const BigInt& other) const {
     if (len != other.len) {
         return false;
     }
-    for (int i=0; i < len; ++i) {
+    for (int i = 0; i < len; ++i) {
         if (number[i] != other.number[i]) {
             return false;
         }

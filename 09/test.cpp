@@ -47,5 +47,6 @@ int main(){
     int isok = sort_by_merge("numbers.dat");
     assert(isok == 0);
     test("numbers.dat", "result.dat"); //check output file
+
     return 0;
 }
